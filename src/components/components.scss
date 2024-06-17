@@ -1,0 +1,12 @@
+$primaryColor : rgb(98, 188, 206); 
+
+.PageLayout__AppBar{
+    .PageLayout__Toolbar-Container{
+        z-index: 10000;
+        background-color: $primaryColor;
+        .PageLayout__Toolbar{
+            width: 100%;
+            padding-inline: 20px;
+        }
+    }
+}
