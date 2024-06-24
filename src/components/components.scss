@@ -1,12 +1,46 @@
-$primaryColor : rgb(98, 188, 206); 
+$primaryColor : rgb(255, 255, 255); 
 
 .PageLayout__AppBar{
     .PageLayout__Toolbar-Container{
         z-index: 10000;
         background-color: $primaryColor;
+        // border-bottom: 1px solid rgb(149, 149, 149);
+        outline: #bab1b1 1px;
+        outline-style: inset;
         .PageLayout__Toolbar{
             width: 100%;
             padding-inline: 20px;
         }
     }
 }
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+  
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+
+  }
+  
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .Lesson{
+    &:hover{
+      background-color: #007FFF !important;
+
+      span.MuiTypography-root{
+        color: white  !important;
+      }
+    }
+  }

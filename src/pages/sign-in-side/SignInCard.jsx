@@ -12,7 +12,7 @@ import useFetchApi from '../../hooks/useFetchApi';
 import { useNavigate } from "react-router-dom";
 import { fetchAPI } from '../../helpers/helper';
 import useToast from '../../hooks/useToast';
-import { AI_TUTOR_PAGE_ID } from '../../const/pages';
+import { AI_TUTOR_PAGE_ID, JS_COURSE_PAGE_ID } from '../../const/pages';
 import StudentContext from '../../contexts/StudentContext';
 
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -59,8 +59,8 @@ export default function SignInCard() {
     const data = await fetchAPI('/auth/login',{method:"POST",body:{email,password}})
     if(!data.success && data.error) return setToast(data.error)
       setStudent(data.student)
-      navigate('/ai_tutor',{ state:{
-        page: AI_TUTOR_PAGE_ID}})
+      navigate('/js_course',{ state:{
+        page: JS_COURSE_PAGE_ID}})
         localStorage.setItem("student",JSON.stringify(data.student))
     } catch (error) {
       setToast(error.message)
@@ -84,9 +84,9 @@ export default function SignInCard() {
       setEmailErrorMessage('');
     }
 
-    if (!password.value || password.value.length < 6) {
+    if (!password.value || password.value.length < 3) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 6 characters long.');
+      setPasswordErrorMessage('Password must be at least 3 characters long.');
       isValid = false;
     } else {
       setPasswordError(false);

@@ -7,7 +7,6 @@ function LessonPage({lesson}) {
   return (
     <PageLayout>
         <Lesson lesson={lesson}/>
-       
     </PageLayout>
   )
 }

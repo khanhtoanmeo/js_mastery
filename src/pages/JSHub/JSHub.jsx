@@ -16,6 +16,7 @@ import {
   L_SPACING,
   M_SPACING,
   PRIMARY_COLOR,
+  SECONDARY_COLOR,
   S_SPACING,
   XL_SPACING,
   XXL_SPACING,
@@ -48,15 +49,18 @@ function JSHub() {
       ) : (
         <>
           <PostSubmissionCard  setData={setData}/>
-          <Card sx={{ marginInline: "15%", marginBlock: XL_SPACING }}>
+          <Stack sx={{ marginInline: "15%", marginBlock: XXL_SPACING,gap:XXL_SPACING }}>
             {!data?.length ? (
               <Text>Chưa có bài đăng nào.</Text>
             ) : (
               data.map((post) => <PostCard key={post._id} post={post} setData={setData}/>)
             )}
-          </Card>
+          </Stack>
         </>
       )}
+        <Box height="50px">
+        <p>{' '}</p>
+      </Box>
     </PageLayout>
   );
 }
@@ -87,14 +91,13 @@ function PostSubmissionCard({setData}) {
   return (
     <Box
       sx={{
-        border: "solid 1px #d7d7d7",
-        position: "sticky",
-        top: 0,
         marginInline: "10%",
         borderRadius: M_SPACING,
         paddingBlock: M_SPACING,
         background:"white",
-        zIndex:100
+        zIndex:100,
+        marginBlock:M_SPACING,
+        border:"solid 1px #afafaf",
       }}
     >
       <FormControl fullWidth>
@@ -104,7 +107,7 @@ function PostSubmissionCard({setData}) {
           </FormLabel>
           <TextField
             sx={{ width: "90%" }}
-            rows={3}
+            rows={2}
             multiline
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -121,7 +124,7 @@ function PostSubmissionCard({setData}) {
               onClick={() => createPost()}
               sx={{ alignSelf: "end", marginInlineEnd: M_SPACING }}
             >
-              <SendIcon />
+              <SendIcon sx={{fill:content && SECONDARY_COLOR}}/>
             </IconButton>
           )}
         </Stack>
@@ -157,18 +160,16 @@ function PostCard({ post,setData }) {
   }
 
   return (
-    <Card key={post._id} sx={{ padding: M_SPACING }}>
-    <Content {...post} />
+    <Card key={post._id} sx={{ padding: L_SPACING,border:"solid 1px #d7d7d7",boxShadow:"14px 14px 20px #aaaaaa"}}>
+    <Content {...post} nameColor={PRIMARY_COLOR} />
       <Divider sx={{ marginBlock: M_SPACING }} />
       <Box sx={{ textAlign: "left" }}>
         <Stack gap={M_SPACING}>
           <Text>Bình luận</Text>
-          <Box >
+          <Box sx={{maxHeight:"250px",overflowY:"auto"}} >
           <Stack paddingLeft={XL_SPACING} >
           {
-            !post?.comments?.length ? <Text sx={{textAlign:"center"}}>Chưa có bình luận nào!</Text> : post.comments.map((comment)=><Card>
-             <Content {...comment}/>
-            </Card>)
+            !post?.comments?.length ? <Text sx={{textAlign:"center"}}>Chưa có bình luận nào!</Text> : post.comments.map((comment)=><Content {...comment}/>  )
           }
           </Stack>
           </Box>
@@ -187,7 +188,7 @@ function PostCard({ post,setData }) {
                   onClick={() => createComment()}
                   sx={{  marginInlineEnd: M_SPACING }}
                 >
-                  <SendIcon />
+                  <SendIcon sx={{fill:content && SECONDARY_COLOR}}/>
                 </IconButton>
               )}
             </Stack>
@@ -199,10 +200,10 @@ function PostCard({ post,setData }) {
 }
 
 
-function Content({createdAt,name,content}){
+function Content({createdAt,name,content,avatarSize="0.8"}){
   return      <Stack padding={M_SPACING}>
-  <Stack direction="row" alignItems="center" gap={M_SPACING}>
-    <Avatar>{processInitialsCustomerName(name)}</Avatar>
+  <Stack direction="row" alignItems="center" gap={S_SPACING} >
+    <Avatar sx={{scale:avatarSize}}>{processInitialsCustomerName(name)}</Avatar>
     <Stack>
       <Text sx={{ marginBlock: 0 }} >{name}</Text>
       <Text sx={{ marginBlock: 0 }} color="#aaa9a9">

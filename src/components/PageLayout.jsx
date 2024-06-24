@@ -7,25 +7,40 @@ import SchoolIcon from '@mui/icons-material/School';
 import GroupsIcon from '@mui/icons-material/Groups';
 import { useState,useEffect } from 'react';
 import { AI_TUTOR_PAGE_ID, JS_COURSE_PAGE_ID, JS_HUB_PAGE_ID } from '../const/pages';
-import useDialog from '../hooks/useDialog';
+import useChatGptDialog from '../hooks/useChatGptDialog';
+import Text from './Text';
+import { PRIMARY_COLOR, SECONDARY_COLOR, XL_SPACING, XXL_SPACING } from '../const/colors';
 
-const pages = [{
-  id:AI_TUTOR_PAGE_ID,
-  title:"JS playground",
-  path:"/ai_tutor",
-  icon:<AssistantIcon/>
-}, {
-  id:JS_COURSE_PAGE_ID,
-  title:'JS course',
-  path:"/js_course",
-  icon:<SchoolIcon />,
-},
-{
-  id:JS_HUB_PAGE_ID,
-  title:'JS hub',
-  path:"/js_hub",
-  icon:<GroupsIcon />,
-}]
+const pages = [
+  {
+    id:JS_COURSE_PAGE_ID,
+    title:'JS course',
+    path:"/js_course",
+    icon:<SchoolIcon  sx={{fill:"#4d8580"}}/>},
+    {
+      id:JS_HUB_PAGE_ID,
+      title:'JS hub',
+      path:"/js_hub",
+      icon:<GroupsIcon sx={{fill:SECONDARY_COLOR}} />,
+    },{
+    id:AI_TUTOR_PAGE_ID,
+    title:"JS playground",
+    path:"/ai_tutor",
+    icon:<AssistantIcon sx={{fill:SECONDARY_COLOR}}/>
+    }, 
+]
+
+function NavIcon({page,color}){
+  switch(page){
+      case JS_COURSE_PAGE_ID:
+        return <SchoolIcon  sx={{fill:color}}/>
+        case JS_HUB_PAGE_ID:
+          return <GroupsIcon  sx={{fill:color}}/>
+          case AI_TUTOR_PAGE_ID:
+            default:
+        return <AssistantIcon  sx={{fill:color}}/>
+  }
+}
 
 function PageLayout({children}) {
   const navigate = useNavigate();
@@ -33,7 +48,7 @@ function PageLayout({children}) {
     page
   }} = useLocation()
   
-  const { handleOpen, DialogComponent } = useDialog();
+  const { handleOpen, DialogComponent } = useChatGptDialog();
 
    useEffect(()=>{
     document.addEventListener('mouseup', () => {
@@ -50,9 +65,9 @@ function PageLayout({children}) {
     <AppBar className='PageLayout__AppBar' >
       <Toolbar className='PageLayout__Toolbar-Container' >
       <Stack className='PageLayout__Toolbar' direction="row" alignItems="center" justifyContent="space-between">
-      <Typography>
+      <Text variant='h6' color={PRIMARY_COLOR} sx={{fontWeight:"700",marginLeft:XXL_SPACING}}>
           JS MASTERY
-        </Typography>
+        </Text>
       <IconButton onClick={()=>navigate('/')}>
         <Logout/>
       </IconButton>
@@ -74,14 +89,19 @@ function PageLayout({children}) {
         <Toolbar />
         <List sx={{paddingBlock:0}}>
           {pages.map((pageData) => (
-            <ListItem  sx={{background: page === pageData.id ? '#ccf9fb' :"white"}} key={pageData.id} disablePadding>
-              <ListItemButton onClick={()=>{
+            // <ListItem  sx={{background: page === pageData.id ? '#9ecfff':"white"}} key={pageData.id} disablePadding>
+            <ListItem key={pageData.id} disablePadding>
+              <ListItemButton sx={{borderBottom:"1px solid #f5f5f5"}}  onClick={()=>{
+                document.querySelector(".css-11of86k").scrollTo({
+                  top:0,
+                  behavior:"smooth"
+                })
                 navigate(pageData.path,{state: { page: pageData.id }})
               }}>
-                <ListItemIcon>
-                  {pageData.icon}
+                <ListItemIcon color={PRIMARY_COLOR}>
+                  <NavIcon page={pageData.id} color={page === pageData.id && PRIMARY_COLOR}/>
                 </ListItemIcon>
-                <ListItemText primary={pageData.title} />
+                <ListItemText primary={pageData.title} sx={{color:page === pageData.id && PRIMARY_COLOR}} />
               </ListItemButton>
             </ListItem>
           ))}

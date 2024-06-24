@@ -7,7 +7,7 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import { Editor } from '@monaco-editor/react';
 
 
-const useDialog = () => {
+const useChatGptDialog = () => {
     const [selected,setSelected] = useState('')
       const  [content,setContent] = useState("")
       const [loading,setLoading] = useState(false)
@@ -50,7 +50,7 @@ const useDialog = () => {
       </DialogContent>
       <DialogActions>
         {actions.map((action, index) => (
-          <Button key={index} onClick={action.onClick || handleClose} color="primary">
+          <Button disabled={loading} key={index} onClick={action.onClick || handleClose} color="primary">
             {action.label}
           </Button>
         ))}
@@ -66,7 +66,7 @@ const useDialog = () => {
   };
 };
 
-export default useDialog;
+export default useChatGptDialog;
 
 
 function Content({content}){
@@ -75,7 +75,7 @@ function Content({content}){
 
     return <Box textAlign="left">
         <Text>{explanation}</Text>
-        <Box marginBlock={S_SPACING} paddingBlock={S_SPACING} paddingInline={M_SPACING} sx={{backgroundColor:SECONDARY_COLOR,borderRadius:XS_SPACING}} >
+        <Box marginBlock={S_SPACING} paddingBlock={S_SPACING} paddingInline={M_SPACING} sx={{backgroundColor:EXAMPLE_BOX_COLOR,borderRadius:XS_SPACING}} >
                 <Stack direction="row" alignItems='start' justifyContent="space-between">
            <Stack>
            {examples.map(line=>
