@@ -9,6 +9,7 @@ import StudentContext from '../contexts/StudentContext'
 import { DataGrid } from '@mui/x-data-grid';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import useSubmissionDialog from '../hooks/useSubmissonDialog'
+import { PENDING } from '../const/submissionStatus'
 
 function Lesson({lesson}) {
     const {title,sections,idx,uniqueKey} = lesson
@@ -117,7 +118,7 @@ function AdminLesson({lesson}){
 
 
 function DataTable({submissions,setSubmissons}) {
-  const rows = submissions.map(sub=>({...sub,id:sub._id,point: sub.point || "null" ,sId:sub.studentUniqueId}))
+  const rows = submissions.map(sub=>({...sub,id:sub._id,point: sub.point || "null" ,sId:sub.studentUniqueId,status:sub.status === PENDING ? "Chưa chấm" :"Đã chấm"}))
   const columns = [
     { field: 'sId', headerName: 'MSSV', width: 200 },
     { field: 'name', headerName: 'Họ và tên', width: 300 },
@@ -128,7 +129,7 @@ function DataTable({submissions,setSubmissons}) {
     },
     { field: 'createdAt', headerName: 'Ngày nộp', width: 100 },
     { field: 'point', headerName: 'Điểm số', width: 100 },
-    { field: 'action', headerName: '', width: 200,renderCell:({row})=>{
+    { field: 'action', headerName: 'Bài làm', width: 200,renderCell:({row})=>{
       return <IconButton onClick={()=>handleOpen(row)}>
         <VisibilityIcon/>
       </IconButton>

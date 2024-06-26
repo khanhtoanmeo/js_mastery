@@ -95,7 +95,7 @@ function CodeEditor({height = "300px",question="",showSubmit=true,showGenerate=f
           <Button disabled={!excercise || !code.trim()} onClick={()=>analyzeCode()}>Phân tích</Button>
           {showSubmit && <Button  onClick={()=>submitCode()} disabled={!code.trim() || excerciseStatus === DONE}>{excerciseStatus === PENDING ? "Sửa bài":"Nộp bài"} </Button> }
       </ButtonGroup>
-      {showSubmit && !loading && (!excerciseStatus ? <Badge>Chưa nộp bài</Badge> :<Badge status={excerciseStatus}>{excerciseStatus === PENDING ? "Chờ chấm bài" :submissionData.point }</Badge>)}
+      {showSubmit && !loading && (!excerciseStatus ? <Badge>Chưa nộp bài</Badge> :<Badge status={excerciseStatus} point={submissionData?.point}>{excerciseStatus === PENDING ? "Chờ chấm bài" : `${submissionData?.point} điểm` }</Badge>)}
       {showGenerate && <FormControl sx={{margin:S_SPACING,maxWidth:"200px"}}>
   <InputLabel id="demo-simple-select-label">Chủ đề</InputLabel>
   <Select
@@ -123,11 +123,11 @@ function CodeEditor({height = "300px",question="",showSubmit=true,showGenerate=f
 
 export default CodeEditor
 
-function Badge({children,sx,status}){
+function Badge({children,sx,status,point=0}){
   const color = ()=>{
     switch(status){
       case DONE:
-        return "#92d792";
+        return point >=5 ? "#30a530" :"#c73333";
         case PENDING:
           return "#bfbf48";
         default:

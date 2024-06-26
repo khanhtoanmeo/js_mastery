@@ -7,7 +7,7 @@ import ContentPasteIcon from '@mui/icons-material/ContentPaste';
 import { DONE } from '../const/submissionStatus';
 
 
-const useSubmissionDialog = ({}) => {
+const useSubmissionDialog = ({setSubmissons}) => {
       const [loading,setLoading] = useState(false)
       const [open, setOpen] = useState(false);
       const [submission,setSubmisson] = useState({})
@@ -23,7 +23,7 @@ const useSubmissionDialog = ({}) => {
                 const {lessonId,studentId,excerciseId} = submission
                 console.log("READY :: ",submission);
                 const data = await fetchAPI("/submissions",{method:"POST",body:{lessonId,studentId,excerciseId,status:DONE,point}})
-                if(data.success) return
+                if(data.success) setSubmissons(prev=>({...prev, [excerciseId]:prev[excerciseId].map(sub=>sub.studentId === studentId ? {...sub,point,status:DONE} : sub)}))
             } catch (error) {
              console.log(error);
             }

@@ -1,4 +1,4 @@
-import  React, {useContext, useEffect} from 'react';
+import  React, {useContext, useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import { CircularProgress, Card as MuiCard, Stack } from '@mui/material';
@@ -14,6 +14,7 @@ import { fetchAPI } from '../../helpers/helper';
 import useToast from '../../hooks/useToast';
 import { AI_TUTOR_PAGE_ID, JS_COURSE_PAGE_ID } from '../../const/pages';
 import StudentContext from '../../contexts/StudentContext';
+import { PRIMARY_COLOR } from '../../const/colors';
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -42,6 +43,7 @@ export default function SignInCard() {
   const navigate = useNavigate();
   const {toast,setToast} = useToast()
   const {setStudent} = useContext(StudentContext)
+  const [isLogin,setIsLogin] = useState("true")
 
 
   const handleClose = () => {
@@ -56,7 +58,12 @@ export default function SignInCard() {
     const info = new FormData(event.currentTarget);
     const email = info.get('email');
     const password = info.get('password');
-    const data = await fetchAPI('/auth/login',{method:"POST",body:{email,password}})
+    const name = info.get('name')
+
+    const body = isLogin ? {email,password} :{email,password,name};
+    const endpoint = isLogin? '/auth/login':'/auth/signup'
+
+    const data = await fetchAPI(  endpoint ,{method:"POST",body})
     if(!data.success && data.error) return setToast(data.error)
       setStudent(data.student)
       navigate('/js_course',{ state:{
@@ -77,7 +84,7 @@ export default function SignInCard() {
 
     if (!email.value || !/\S+@\S+\.\S+/.test(email.value)) {
       setEmailError(true);
-      setEmailErrorMessage('Please enter a valid email address.');
+      setEmailErrorMessage('Vui lòng nhập email hợp lệ');
       isValid = false;
     } else {
       setEmailError(false);
@@ -86,7 +93,7 @@ export default function SignInCard() {
 
     if (!password.value || password.value.length < 3) {
       setPasswordError(true);
-      setPasswordErrorMessage('Password must be at least 3 characters long.');
+      setPasswordErrorMessage('Mật khẩu phải dài ít nhất 3 ký tự');
       isValid = false;
     } else {
       setPasswordError(false);
@@ -106,7 +113,7 @@ export default function SignInCard() {
         variant="h4"
         sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
       >
-        Sign in
+        {isLogin ? "Đăng nhập" :"Đăng ký"}
       </Typography>
       <Box
         component="form"
@@ -120,7 +127,7 @@ export default function SignInCard() {
         }}
       >
         <FormControl>
-          <FormLabel htmlFor="email">Email</FormLabel>
+          <FormLabel sx={{textAlign:"left"}} htmlFor="email">Email</FormLabel>
           <TextField
             error={emailError}
             helperText={emailErrorMessage}
@@ -144,7 +151,7 @@ export default function SignInCard() {
               justifyContent: 'space-between',
             }}
           >
-            <FormLabel htmlFor="password">Password</FormLabel>
+            <FormLabel htmlFor="password">Mật khẩu</FormLabel>
           </Box>
           <TextField
             error={passwordError}
@@ -154,17 +161,39 @@ export default function SignInCard() {
             type="password"
             id="password"
             autoComplete="current-password"
-            autoFocus
             required
             fullWidth
             variant="outlined"
             color={passwordError ? 'error' : 'primary'}
           />
         </FormControl>
+      {!isLogin &&   <FormControl>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <FormLabel htmlFor="name">Họ và tên</FormLabel>
+          </Box>
+          <TextField
+            name="name"
+            placeholder="Nguyễn Hữu A"
+            type="text"
+            id="name"
+            required
+            fullWidth
+            variant="outlined"
+          />
+        </FormControl>}
         <ForgotPassword open={open} handleClose={handleClose} />
         <Button type="submit" fullWidth variant="contained" disabled={loading}>
-          Sign in
+          {isLogin ? "Đăng nhập" :"Tạo tài khoản"}
         </Button>
+        <button style={{background:"none",outline:"none",border:"none", color:"#a6a6a6"}} onClick={(e)=>{
+          e.preventDefault()
+          setIsLogin(prev=>!prev)
+        }}>{isLogin ? "Tạo tài khoản" :"Đăng nhập"}</button>
       </Box>
       <Stack alignItems='center' >
         {loading && <CircularProgress size="20px"/>}
