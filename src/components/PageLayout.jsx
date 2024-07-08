@@ -63,7 +63,7 @@ function PageLayout({children}) {
   return (
    <Box sx={{ flexGrow: 1 }}>
     <AppBar className='PageLayout__AppBar' >
-      <Toolbar className='PageLayout__Toolbar-Container' >
+      <Toolbar className='PageLayout__Toolbar-Container'>
       <Stack className='PageLayout__Toolbar' direction="row" alignItems="center" justifyContent="space-between">
       <Text variant='h6' color={PRIMARY_COLOR} sx={{fontWeight:"700",marginLeft:XXL_SPACING}}>
           JS MASTERY
@@ -80,8 +80,8 @@ function PageLayout({children}) {
           flexShrink: 0,
           '& .MuiDrawer-paper': {
             width: "230px",
-            boxSizing: 'border-box',
-          },
+            boxSizing: 'border-box'
+          }
         }}
         variant="permanent"
         anchor="left"
@@ -89,7 +89,6 @@ function PageLayout({children}) {
         <Toolbar />
         <List sx={{paddingBlock:0}}>
           {pages.map((pageData) => (
-            // <ListItem  sx={{background: page === pageData.id ? '#9ecfff':"white"}} key={pageData.id} disablePadding>
             <ListItem key={pageData.id} disablePadding>
               <ListItemButton sx={{borderBottom:"1px solid #f5f5f5"}}  onClick={()=>{
                 document.querySelector(".css-11of86k").scrollTo({

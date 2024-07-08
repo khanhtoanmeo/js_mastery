@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const BASE_URL = "https://js-mastery-server.vercel.app/api/";
+
 /**
  * A method to call API with given settings
  *
@@ -18,7 +20,7 @@ export async function api({
   params = {},
   options = {},
   clientConfig = {
-    baseURL: "http://localhost:8888/api",
+    baseURL: BASE_URL,
     timeout: 60000,
   },
 }) {
@@ -29,6 +31,8 @@ export async function api({
       headers: {
         accept: "application/json",
         ...(options.headers || {}),
+        "Accept-Control-Allow-Origin": "*",
+        "Accept-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
       },
       url,
       method,
@@ -45,7 +49,7 @@ export function getAuthenticatedFetchApi() {
     uri,
     options = {},
     clientConfig = {
-      baseURL: "http://localhost:8888/api",
+      baseURL: BASE_URL,
       timeout: 60000,
     }
   ) => {
