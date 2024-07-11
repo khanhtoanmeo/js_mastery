@@ -2,11 +2,14 @@ import {useState} from 'react';
 import {IconButton, Snackbar} from '@mui/material';
 import {Close} from "@mui/icons-material"
 
-export default function useToast() {
+export default function useToast({setOpen=()=>{}}) {
   const [message, setMessage] = useState('');
 
   const handleClose = (event, reason) => {
-    if (reason === 'timeout') setMessage('');
+    if (reason === 'timeout') {
+      setMessage('')
+      setOpen(false)
+    }
   };
 
   const toast = (

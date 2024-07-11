@@ -9,11 +9,11 @@ import useToast from './useToast';
 
 
 const useChatGptDialog = () => {
-  const {toast,setToast} = useToast()
-    const [selected,setSelected] = useState('')
-      const  [content,setContent] = useState("")
-      const [loading,setLoading] = useState(false)
-      const [open, setOpen] = useState(false);
+  const [selected,setSelected] = useState('')
+  const  [content,setContent] = useState("")
+  const [loading,setLoading] = useState(false)
+  const [open, setOpen] = useState(false);
+  const {toast,setToast} = useToast({setOpen})
       const  actions = [
           { label: 'Hỏi chatgpt 4.0', onClick:()=> askChatGpt()},
           { label: 'Tra cứu với google', onClick: () =>{ 
@@ -30,7 +30,6 @@ const useChatGptDialog = () => {
             } catch (error) {
              console.log(error);
              setToast("Chatgpt không thể xử lý đầu vào, hoặc đầu vào không liên quan đến lập trình Javascript")
-             setOpen(false)
             }
             finally{
                 setLoading(false)
