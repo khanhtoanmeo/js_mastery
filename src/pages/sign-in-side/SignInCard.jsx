@@ -41,7 +41,7 @@ export default function SignInCard() {
   const [open, setOpen] = React.useState(false);
   const {data,loading,setLoading} = useFetchApi({url:"/students/sync",method:"POST"})
   const navigate = useNavigate();
-  const {toast,setToast} = useToast()
+  const {toast,setToast} = useToast({})
   const {setStudent} = useContext(StudentContext)
   const [isLogin,setIsLogin] = useState("true")
 
