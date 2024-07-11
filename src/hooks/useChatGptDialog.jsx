@@ -4,10 +4,12 @@ import { fetchAPI } from '../helpers/helper';
 import Text from '../components/Text';
 import { EXAMPLE_BOX_COLOR, M_SPACING, SECONDARY_COLOR, S_SPACING, XS_SPACING } from '../const/colors';
 import ContentPasteIcon from '@mui/icons-material/ContentPaste';
-import { Editor } from '@monaco-editor/react';
+import useToast from './useToast';
+
 
 
 const useChatGptDialog = () => {
+  const {toast,setToast} = useToast()
     const [selected,setSelected] = useState('')
       const  [content,setContent] = useState("")
       const [loading,setLoading] = useState(false)
@@ -23,9 +25,12 @@ const useChatGptDialog = () => {
             try {
                 setLoading(true)
                 const data = await fetchAPI("/code/askGpt",{method:"POST",body:{query:selected}})
-                if(data.success) setContent(data.data)
+                const {explanation,examples} = JSON.parse(data.data)
+                if(data.success) setContent({explanation,examples})
             } catch (error) {
              console.log(error);
+             setToast("Chatgpt không thể xử lý đầu vào, hoặc đầu vào không liên quan đến lập trình Javascript")
+             setOpen(false)
             }
             finally{
                 setLoading(false)
@@ -55,6 +60,7 @@ const useChatGptDialog = () => {
           </Button>
         ))}
       </DialogActions>
+      {toast}
     </Dialog>
   );
 
@@ -70,7 +76,7 @@ export default useChatGptDialog;
 
 
 function Content({content}){
-    const {explanation,examples} = JSON.parse(content)
+    const {explanation,examples} = content
     console.log("DATA ::: ",explanation,examples);
 
     return <Box textAlign="left">
